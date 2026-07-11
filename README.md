@@ -1,5 +1,7 @@
 # Open Notebook MCP Server
 
+[English] | [日本語](docs/README/JA.md) | [简体中文](docs/README/ZH.md)
+
 <!-- mcp-name: io.github.Epochal-dev/open-notebook -->
 
 An MCP (Model Context Protocol) server that provides tools to interact with the [Open Notebook](https://github.com/lfnovo/open-notebook) API. This server enables AI assistants like Claude to manage notebooks, sources, notes, search content, and interact with AI models through Open Notebook.
@@ -15,23 +17,34 @@ An MCP (Model Context Protocol) server that provides tools to interact with the 
 - **Settings**: Access and update application settings
 - **Progressive Disclosure**: Efficient tool discovery with `search_capabilities`
 
-## Installation
+## Quick Start with uvx (Recommended)
 
-### Using uv (recommended)
+Since this package is published on PyPI, you do not need to clone or install it manually. You can run the server instantly using **`uvx`** (the tool runner for `uv`):
 
 ```bash
-# Clone the repository
-git clone https://github.com/PiotrAleksander/open-notebook-mcp.git
-cd open-notebook-mcp
-
-# Install with uv
-uv sync
+# Run the MCP server instantly
+uvx onb-mcp
 ```
 
-### Using pip
+### Using with Claude Desktop
 
-```bash
-pip install -e .
+Add the server to your Claude Desktop configuration (`~/Library/Application Support/Claude/claude_desktop_config.json` on macOS, or `%APPDATA%\Claude\claude_desktop_config.json` on Windows):
+
+```json
+{
+  "mcpServers": {
+    "open-notebook": {
+      "command": "uvx",
+      "args": [
+        "onb-mcp"
+      ],
+      "env": {
+        "OPEN_NOTEBOOK_URL": "http://localhost:5055",
+        "OPEN_NOTEBOOK_PASSWORD": "your_password_here"
+      }
+    }
+  }
+}
 ```
 
 ## Configuration
@@ -40,7 +53,7 @@ The server requires configuration to connect to your Open Notebook instance:
 
 ### Environment Variables
 
-Create a `.env` file or set these environment variables:
+Set these environment variables in your MCP client configuration (e.g. Claude Desktop config):
 
 ```bash
 # Required: URL of your Open Notebook instance
@@ -53,39 +66,29 @@ OPEN_NOTEBOOK_PASSWORD=your_password_here
 MCP_TRANSPORT=stdio  # or streamable-http for remote deployment
 ```
 
-### Example Configuration
+## Development & Installation from Source
 
-For local development with default Open Notebook settings:
+If you want to modify the code or run it locally from source:
 
-```bash
-# .env
-OPEN_NOTEBOOK_URL=http://localhost:5055
-```
-
-If you've configured authentication in Open Notebook:
+### Clone and Sync
 
 ```bash
-# .env
-OPEN_NOTEBOOK_URL=http://localhost:5055
-OPEN_NOTEBOOK_PASSWORD=my_secure_password
+# Clone the repository
+git clone https://github.com/rmc8/onb-mcp.git
+cd onb-mcp
+
+# Install with uv
+uv sync
 ```
 
-## Usage
-
-### Running the Server
+### Running the Dev Server
 
 #### Development Mode (STDIO)
 
-For local use with AI assistants:
+For local use with AI assistants from the source directory:
 
 ```bash
-uv run open-notebook-mcp
-```
-
-Or using the MCP CLI:
-
-```bash
-mcp dev src/open_notebook_mcp/server.py
+uv run onb-mcp
 ```
 
 #### Production Mode (Streamable HTTP)
@@ -93,31 +96,7 @@ mcp dev src/open_notebook_mcp/server.py
 For remote deployment:
 
 ```bash
-MCP_TRANSPORT=streamable-http HOST=0.0.0.0 PORT=8000 uv run open-notebook-mcp
-```
-
-### Using with Claude Desktop
-
-Add to your Claude Desktop configuration (`~/Library/Application Support/Claude/claude_desktop_config.json` on macOS):
-
-```json
-{
-  "mcpServers": {
-    "open-notebook": {
-      "command": "uv",
-      "args": [
-        "run",
-        "--directory",
-        "/path/to/open-notebook-mcp",
-        "open-notebook-mcp"
-      ],
-      "env": {
-        "OPEN_NOTEBOOK_URL": "http://localhost:5055",
-        "OPEN_NOTEBOOK_PASSWORD": "your_password_if_needed"
-      }
-    }
-  }
-}
+MCP_TRANSPORT=streamable-http HOST=0.0.0.0 PORT=8000 uv run onb-mcp
 ```
 
 ### Discovering Available Tools
@@ -245,7 +224,7 @@ history = get_chat_session(session_id=session_id)
 
 ## Available Tools
 
-The server provides 39 tools across multiple categories:
+The server provides 50 tools across multiple categories:
 
 ### Meta Tools
 
@@ -279,6 +258,22 @@ The server provides 39 tools across multiple categories:
 
 - `get_settings`, `update_settings`
 
+### Transformations (3 tools)
+
+- `list_transformations`, `create_transformation`, `apply_transformation`
+
+### Podcasts (3 tools)
+
+- `generate_podcast`, `retry_podcast`, `get_podcast_job_status`
+
+### Credentials (4 tools)
+
+- `list_credentials`, `test_credential`, `discover_models`, `register_models`
+
+### Embedding Rebuild (1 tool)
+
+- `rebuild_embeddings`
+
 ## Architecture
 
 This server follows MCP best practices:
@@ -295,12 +290,12 @@ This server follows MCP best practices:
 ### Project Structure
 
 ```
-open-notebook-mcp/
+onb-mcp/
 ├── src/
-│   └── open_notebook_mcp/
+│   └── onb_mcp/
 │       ├── __init__.py
 │       └── server.py          # Main MCP server implementation
-├── tests/                      # (to be added)
+├── tests/
 ├── pyproject.toml
 ├── README.md
 └── .env.example
@@ -311,13 +306,13 @@ open-notebook-mcp/
 Test the server using the MCP Inspector:
 
 ```bash
-mcp dev src/open_notebook_mcp/server.py
+mcp dev src/onb_mcp/server.py
 ```
 
 or
 
 ```bash
-npx @modelcontextprotocol/inspector uv --directory ./src/open_notebook_mcp "run" "server.py"
+npx @modelcontextprotocol/inspector uv --directory ./src/onb_mcp "run" "server.py"
 ```
 
 This opens an interactive inspector where you can:

@@ -1,6 +1,6 @@
 """Tests for the Open Notebook MCP server."""
 
-from open_notebook_mcp.server import CAPABILITIES, search_capabilities
+from onb_mcp.server import CAPABILITIES, search_capabilities
 
 
 def test_capabilities_defined():

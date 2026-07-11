@@ -1,16 +1,16 @@
 .PHONY: run dev run-http inspect test bump-patch bump-minor bump-major
 
 run:
-	uv run open-notebook-mcp
+	uv run onb-mcp
 
 dev:
-	mcp dev src/open_notebook_mcp/server.py
+	mcp dev src/onb_mcp/server.py
 
 run-http:
-	MCP_TRANSPORT=streamable-http HOST=0.0.0.0 PORT=8000 uv run open-notebook-mcp
+	MCP_TRANSPORT=streamable-http HOST=0.0.0.0 PORT=8000 uv run onb-mcp
 
 inspect:
-	npx @modelcontextprotocol/inspector uv --directory ./src/open_notebook_mcp "run" "server.py"
+	npx @modelcontextprotocol/inspector uv --directory ./src/onb_mcp "run" "server.py"
 
 test:
 	uv run pytest

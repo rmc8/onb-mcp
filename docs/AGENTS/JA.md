@@ -13,12 +13,11 @@
 - `src/onb_mcp/mcp_app.py`: FastMCP インスタンス (`mcp`)
 - `src/onb_mcp/client.py`: HTTP通信用ヘルパー (`make_request`)
 - `src/onb_mcp/capabilities.py`: ツールメタデータ定義 (`CAPABILITIES` タプル)
-- `src/onb_mcp/tools/`: 全ての `@mcp.tool()` 実装（新規ツールは機能ドメイン別にこのディレクトリ内にモジュールを作成して実装）
+- `src/onb_mcp/tools.py`: 全ての `@mcp.tool()` 実装（新規ツールはここに実装）
 - `src/onb_mcp/server.py`: 各モジュールを読み込み、テスト互換用にシンボルを再エクスポートするエントリーポイント
 
 ## 3. ツール追加時の開発フロー
-1. **ツール実装**: `src/onb_mcp/tools/` ディレクトリ配下に機能ドメイン別にモジュールを作成（または既存ファイルに追記）し、`@mcp.tool()` デコレータ付きで関数を実装します。
-2. **パッケージ登録**: `src/onb_mcp/tools/__init__.py` の副作用インポートリストに作成したモジュールを追加します。
-3. **メタデータ更新**: 作成したモジュール内に `CAPABILITIES` タプルを定義し、`src/onb_mcp/capabilities.py` 内の `CAPABILITIES` へのインポートとマージを行います。
-4. **テスト追加**: `tests/test_capabilities.py` に動作検証および返却データの契約テストを追加します。
-5. **検証**: `uv run pytest` を実行し、すべてのテストがパスすることを確認します。
+1. **メタデータ更新**: `capabilities.py` の `CAPABILITIES` タプルに新しいツールの定義を必ず追記します。
+2. **ツール実装**: `tools.py` に `@mcp.tool()` デコレータ付きで関数を実装します。
+3. **テスト追加**: `tests/test_capabilities.py` に動作検証および返却データの契約テストを追加します。
+4. **検証**: `uv run pytest` を実行し、すべてのテストがパスすることを確認します。

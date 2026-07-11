@@ -1,9 +1,9 @@
 [project]
-name = "open-notebook-mcp"
-version = "0.2.0"
+name = "onb-mcp"
+version = "0.3.0"
 description = "MCP server that wraps the Open Notebook API"
 authors = [
-    { name = "Piotr Mrzygłowski", email = "piotr@epochal.dev" }
+    { name = "rmc8" }
 ]
 readme = "README.md"
 requires-python = ">=3.12"
@@ -12,17 +12,18 @@ dependencies = [
     "mcp[cli]>=1.23.2",
 ]
 
+[project.urls]
+Repository = "https://github.com/rmc8/onb-mcp"
+Homepage = "https://github.com/rmc8/onb-mcp"
+
+[project.scripts]
+onb-mcp = "onb_mcp:main"
+
 [dependency-groups]
 dev = [
     "pytest>=8.3.4",
+    "ruff>=0.15.21",
 ]
-
-[project.urls]
-Repository = "https://github.com/Epochal-dev/open-notebook-mcp"
-Homepage = "https://github.com/Epochal-dev/open-notebook-mcp"
-
-[project.scripts]
-open-notebook-mcp = "open_notebook_mcp:main"
 
 [build-system]
 requires = ["uv_build>=0.9.16,<0.10.0"]
