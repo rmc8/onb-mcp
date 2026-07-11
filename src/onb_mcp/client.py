@@ -2,7 +2,7 @@ import logging
 from typing import Any, Optional
 import httpx
 
-from .config import get_base_url, get_auth_token, DEFAULT_TIMEOUT_S
+from .config import get_base_url, get_auth_token, get_cf_access_headers, DEFAULT_TIMEOUT_S
 
 log = logging.getLogger("onb-mcp")
 
@@ -22,6 +22,8 @@ async def make_request(
     auth_token = get_auth_token()
     if auth_token:
         headers["Authorization"] = f"Bearer {auth_token}"
+
+    headers.update(get_cf_access_headers())
 
     async with httpx.AsyncClient(
         follow_redirects=True, timeout=DEFAULT_TIMEOUT_S
