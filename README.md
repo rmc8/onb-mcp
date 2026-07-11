@@ -1,5 +1,7 @@
 # Open Notebook MCP Server
 
+[English] | [日本語](docs/README/JA.md) | [简体中文](docs/README/ZH.md)
+
 <!-- mcp-name: io.github.Epochal-dev/open-notebook -->
 
 An MCP (Model Context Protocol) server that provides tools to interact with the [Open Notebook](https://github.com/lfnovo/open-notebook) API. This server enables AI assistants like Claude to manage notebooks, sources, notes, search content, and interact with AI models through Open Notebook.
@@ -21,8 +23,8 @@ An MCP (Model Context Protocol) server that provides tools to interact with the 
 
 ```bash
 # Clone the repository
-git clone https://github.com/PiotrAleksander/open-notebook-mcp.git
-cd open-notebook-mcp
+git clone https://github.com/rmc8/onb-mcp.git
+cd onb-mcp
 
 # Install with uv
 uv sync
@@ -79,13 +81,13 @@ OPEN_NOTEBOOK_PASSWORD=my_secure_password
 For local use with AI assistants:
 
 ```bash
-uv run open-notebook-mcp
+uv run onb-mcp
 ```
 
 Or using the MCP CLI:
 
 ```bash
-mcp dev src/open_notebook_mcp/server.py
+mcp dev src/onb_mcp/server.py
 ```
 
 #### Production Mode (Streamable HTTP)
@@ -93,7 +95,7 @@ mcp dev src/open_notebook_mcp/server.py
 For remote deployment:
 
 ```bash
-MCP_TRANSPORT=streamable-http HOST=0.0.0.0 PORT=8000 uv run open-notebook-mcp
+MCP_TRANSPORT=streamable-http HOST=0.0.0.0 PORT=8000 uv run onb-mcp
 ```
 
 ### Using with Claude Desktop
@@ -108,8 +110,8 @@ Add to your Claude Desktop configuration (`~/Library/Application Support/Claude/
       "args": [
         "run",
         "--directory",
-        "/path/to/open-notebook-mcp",
-        "open-notebook-mcp"
+        "/path/to/onb-mcp",
+        "onb-mcp"
       ],
       "env": {
         "OPEN_NOTEBOOK_URL": "http://localhost:5055",
@@ -295,9 +297,9 @@ This server follows MCP best practices:
 ### Project Structure
 
 ```
-open-notebook-mcp/
+onb-mcp/
 ├── src/
-│   └── open_notebook_mcp/
+│   └── onb_mcp/
 │       ├── __init__.py
 │       └── server.py          # Main MCP server implementation
 ├── tests/                      # (to be added)
@@ -311,13 +313,13 @@ open-notebook-mcp/
 Test the server using the MCP Inspector:
 
 ```bash
-mcp dev src/open_notebook_mcp/server.py
+mcp dev src/onb_mcp/server.py
 ```
 
 or
 
 ```bash
-npx @modelcontextprotocol/inspector uv --directory ./src/open_notebook_mcp "run" "server.py"
+npx @modelcontextprotocol/inspector uv --directory ./src/onb_mcp "run" "server.py"
 ```
 
 This opens an interactive inspector where you can:

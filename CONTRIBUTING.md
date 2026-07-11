@@ -7,8 +7,8 @@ Thank you for your interest in contributing! This document provides guidelines f
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/PiotrAleksander/open-notebook-mcp.git
-   cd open-notebook-mcp
+   git clone https://github.com/rmc8/onb-mcp.git
+   cd onb-mcp
    ```
 
 2. **Install dependencies**
@@ -26,9 +26,9 @@ Thank you for your interest in contributing! This document provides guidelines f
 ## Project Structure
 
 ```
-open-notebook-mcp/
+onb-mcp/
 ├── src/
-│   └── open_notebook_mcp/
+│   └── onb_mcp/
 │       ├── __init__.py         # Package entry point
 │       └── server.py           # Main MCP server implementation
 ├── tests/
@@ -104,7 +104,7 @@ async def my_new_tool(param1: str, param2: Optional[int] = None) -> dict[str, An
 uv run python tests/test_capabilities.py
 
 # Test specific functionality
-uv run python -c "from open_notebook_mcp.server import search_capabilities; print(search_capabilities('notebook'))"
+uv run python -c "from onb_mcp.server import search_capabilities; print(search_capabilities('notebook'))"
 ```
 
 ### Manual Testing
@@ -114,19 +114,19 @@ Use the MCP Inspector for interactive testing:
 ```bash
 # Note: This may not work if mcp dev has issues with the file structure
 # Alternatively, just run the server directly
-uv run open-notebook-mcp
+uv run onb-mcp
 ```
 
 or
 
 ```bash
-npx @modelcontextprotocol/inspector uv --directory ./src/open_notebook_mcp "run" "server.py"
+npx @modelcontextprotocol/inspector uv --directory ./src/onb_mcp "run" "server.py"
 ```
 
 Or test directly:
 
 ```bash
-OPEN_NOTEBOOK_URL=http://localhost:5055 uv run open-notebook-mcp
+OPEN_NOTEBOOK_URL=http://localhost:5055 uv run onb-mcp
 ```
 
 ### Test Checklist

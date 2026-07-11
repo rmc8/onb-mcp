@@ -8,10 +8,9 @@ Note: This requires a running Open Notebook instance.
 
 import asyncio
 import os
-from open_notebook_mcp.server import (
+from onb_mcp.server import (
     search_capabilities,
     list_notebooks,
-    create_notebook,
     list_models,
 )
 
