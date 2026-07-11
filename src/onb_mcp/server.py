@@ -25,17 +25,21 @@ MAX_LIMIT = 100
 # Default timeout for HTTP requests (seconds)
 DEFAULT_TIMEOUT_S = 30.0
 
+
 def get_base_url() -> str:
     """Get the Open Notebook API base URL from environment."""
     return os.getenv("OPEN_NOTEBOOK_URL", "http://localhost:5055")
+
 
 def get_auth_token() -> Optional[str]:
     """Get the authentication token from environment."""
     return os.getenv("OPEN_NOTEBOOK_PASSWORD")
 
+
 def generate_request_id() -> str:
     """Generate a unique request ID for tracking."""
     return str(uuid.uuid4())
+
 
 # -----------------------------
 # Capability index (source of truth)
@@ -45,22 +49,28 @@ def generate_request_id() -> str:
 
 Detail = Literal["name", "summary", "full"]
 
+
 @dataclass(frozen=True)
 class Capability:
-    name: str                 # tool name
-    summary: str              # one-liner
-    tags: tuple[str, ...]     # searchable tags
-    args: dict[str, str]      # param -> type (stringified)
-    returns: str              # return type (stringified)
-    example: dict[str, Any]   # example call args
-    typical_bytes: int        # typical response size (rough)
+    name: str  # tool name
+    summary: str  # one-liner
+    tags: tuple[str, ...]  # searchable tags
+    args: dict[str, str]  # param -> type (stringified)
+    returns: str  # return type (stringified)
+    example: dict[str, Any]  # example call args
+    typical_bytes: int  # typical response size (rough)
+
 
 CAPABILITIES: tuple[Capability, ...] = (
     Capability(
         name="search_capabilities",
         summary="Search tools exposed by this server with progressive detail levels.",
         tags=("meta", "discovery", "progressive-disclosure"),
-        args={"query": "str", "detail": "Literal['name','summary','full']", "limit": "int"},
+        args={
+            "query": "str",
+            "detail": "Literal['name','summary','full']",
+            "limit": "int",
+        },
         returns="dict[str, Any]",
         example={"query": "notebook", "detail": "summary", "limit": 10},
         typical_bytes=1200,
@@ -97,7 +107,12 @@ CAPABILITIES: tuple[Capability, ...] = (
         name="update_notebook",
         summary="Update a notebook.",
         tags=("notebooks", "update", "write"),
-        args={"notebook_id": "str", "name": "Optional[str]", "description": "Optional[str]", "archived": "Optional[bool]"},
+        args={
+            "notebook_id": "str",
+            "name": "Optional[str]",
+            "description": "Optional[str]",
+            "archived": "Optional[bool]",
+        },
         returns="dict[str, Any]",
         example={"notebook_id": "notebook:abc123", "name": "Updated Name"},
         typical_bytes=500,
@@ -134,16 +149,31 @@ CAPABILITIES: tuple[Capability, ...] = (
         name="create_source",
         summary="Create a new source (link, upload, or text).",
         tags=("sources", "create", "write"),
-        args={"notebook_id": "str", "type": "str", "url": "Optional[str]", "title": "Optional[str]", "embed": "bool"},
+        args={
+            "notebook_id": "str",
+            "type": "str",
+            "url": "Optional[str]",
+            "title": "Optional[str]",
+            "embed": "bool",
+        },
         returns="dict[str, Any]",
-        example={"notebook_id": "notebook:abc123", "type": "link", "url": "https://example.com", "embed": True},
+        example={
+            "notebook_id": "notebook:abc123",
+            "type": "link",
+            "url": "https://example.com",
+            "embed": True,
+        },
         typical_bytes=2000,
     ),
     Capability(
         name="update_source",
         summary="Update a source.",
         tags=("sources", "update", "write"),
-        args={"source_id": "str", "title": "Optional[str]", "topics": "Optional[list[str]]"},
+        args={
+            "source_id": "str",
+            "title": "Optional[str]",
+            "topics": "Optional[list[str]]",
+        },
         returns="dict[str, Any]",
         example={"source_id": "source:abc123", "title": "New Title"},
         typical_bytes=2000,
@@ -180,16 +210,30 @@ CAPABILITIES: tuple[Capability, ...] = (
         name="create_note",
         summary="Create a new note.",
         tags=("notes", "create", "write"),
-        args={"notebook_id": "str", "title": "str", "content": "str", "topics": "Optional[list[str]]"},
+        args={
+            "notebook_id": "str",
+            "title": "str",
+            "content": "str",
+            "topics": "Optional[list[str]]",
+        },
         returns="dict[str, Any]",
-        example={"notebook_id": "notebook:abc123", "title": "My Note", "content": "Note content"},
+        example={
+            "notebook_id": "notebook:abc123",
+            "title": "My Note",
+            "content": "Note content",
+        },
         typical_bytes=1500,
     ),
     Capability(
         name="update_note",
         summary="Update a note.",
         tags=("notes", "update", "write"),
-        args={"note_id": "str", "title": "Optional[str]", "content": "Optional[str]", "topics": "Optional[list[str]]"},
+        args={
+            "note_id": "str",
+            "title": "Optional[str]",
+            "content": "Optional[str]",
+            "topics": "Optional[list[str]]",
+        },
         returns="dict[str, Any]",
         example={"note_id": "note:abc123", "title": "Updated Title"},
         typical_bytes=1500,
@@ -208,7 +252,12 @@ CAPABILITIES: tuple[Capability, ...] = (
         name="search",
         summary="Search content using vector or text search.",
         tags=("search", "query", "vector"),
-        args={"query": "str", "type": "str", "notebook_id": "Optional[str]", "limit": "int"},
+        args={
+            "query": "str",
+            "type": "str",
+            "notebook_id": "Optional[str]",
+            "limit": "int",
+        },
         returns="dict[str, Any]",
         example={"query": "AI research", "type": "vector", "limit": 10},
         typical_bytes=3000,
@@ -217,18 +266,38 @@ CAPABILITIES: tuple[Capability, ...] = (
         name="ask_question",
         summary="Ask a question about your content with detailed control.",
         tags=("search", "ask", "ai", "question"),
-        args={"question": "str", "strategy_model": "str", "answer_model": "str", "final_answer_model": "str"},
+        args={
+            "question": "str",
+            "strategy_model": "str",
+            "answer_model": "str",
+            "final_answer_model": "str",
+        },
         returns="dict[str, Any]",
-        example={"question": "What are the main AI applications?", "strategy_model": "model:abc", "answer_model": "model:abc", "final_answer_model": "model:abc"},
+        example={
+            "question": "What are the main AI applications?",
+            "strategy_model": "model:abc",
+            "answer_model": "model:abc",
+            "final_answer_model": "model:abc",
+        },
         typical_bytes=5000,
     ),
     Capability(
         name="ask_simple",
         summary="Ask a question about your content with simplified interface.",
         tags=("search", "ask", "ai", "question", "simple"),
-        args={"question": "str", "strategy_model": "str", "answer_model": "str", "final_answer_model": "str"},
+        args={
+            "question": "str",
+            "strategy_model": "str",
+            "answer_model": "str",
+            "final_answer_model": "str",
+        },
         returns="dict[str, Any]",
-        example={"question": "Summarize my AI research", "strategy_model": "model:abc", "answer_model": "model:abc", "final_answer_model": "model:abc"},
+        example={
+            "question": "Summarize my AI research",
+            "strategy_model": "model:abc",
+            "answer_model": "model:abc",
+            "final_answer_model": "model:abc",
+        },
         typical_bytes=4000,
     ),
     # Models API
@@ -329,7 +398,10 @@ CAPABILITIES: tuple[Capability, ...] = (
         tags=("chat", "execute", "message", "ai"),
         args={"session_id": "str", "message": "str", "context": "Optional[dict]"},
         returns="dict[str, Any]",
-        example={"session_id": "session:abc123", "message": "What are the key insights?"},
+        example={
+            "session_id": "session:abc123",
+            "message": "What are the key insights?",
+        },
         typical_bytes=3000,
     ),
     Capability(
@@ -362,8 +434,10 @@ CAPABILITIES: tuple[Capability, ...] = (
     ),
 )
 
+
 def _normalize(s: str) -> str:
     return re.sub(r"[^a-z0-9]+", " ", s.lower()).strip()
+
 
 def _match_score(q: str, cap: Capability) -> int:
     if not q:
@@ -377,15 +451,18 @@ def _match_score(q: str, cap: Capability) -> int:
             score += 1
     return score
 
+
 @mcp.tool()
-def search_capabilities(query: str = "", detail: Detail = "summary", limit: int = 20) -> dict[str, Any]:
+def search_capabilities(
+    query: str = "", detail: Detail = "summary", limit: int = 20
+) -> dict[str, Any]:
     """Search tools exposed by this server with progressive detail levels.
-    
+
     Args:
         query: Search query to filter tools
         detail: Level of detail - 'name' (minimal), 'summary' (default), or 'full' (complete)
         limit: Maximum number of results (1-50)
-    
+
     Returns:
         Dictionary with request_id, query, detail, count, matches, and hint fields
     """
@@ -404,17 +481,21 @@ def search_capabilities(query: str = "", detail: Detail = "summary", limit: int 
         if detail == "name":
             matches.append({"name": cap.name})
         elif detail == "summary":
-            matches.append({"name": cap.name, "summary": cap.summary, "tags": list(cap.tags)})
+            matches.append(
+                {"name": cap.name, "summary": cap.summary, "tags": list(cap.tags)}
+            )
         else:
-            matches.append({
-                "name": cap.name,
-                "summary": cap.summary,
-                "tags": list(cap.tags),
-                "args": cap.args,
-                "returns": cap.returns,
-                "example": cap.example,
-                "typical_bytes": cap.typical_bytes,
-            })
+            matches.append(
+                {
+                    "name": cap.name,
+                    "summary": cap.summary,
+                    "tags": list(cap.tags),
+                    "args": cap.args,
+                    "returns": cap.returns,
+                    "example": cap.example,
+                    "typical_bytes": cap.typical_bytes,
+                }
+            )
 
     return {
         "request_id": request_id,
@@ -425,11 +506,11 @@ def search_capabilities(query: str = "", detail: Detail = "summary", limit: int 
         "hint": "Use detail='name' for minimal context; detail='full' only when implementing a call.",
     }
 
+
 # -----------------------------
 # HTTP helper functions
 # -----------------------------
-# HTTP helper functions
-# -----------------------------
+
 
 async def make_request(
     method: str,
@@ -439,68 +520,76 @@ async def make_request(
     params: Optional[dict[str, Any]] = None,
 ) -> dict[str, Any]:
     """Make an HTTP request to the Open Notebook API.
-    
+
     Args:
         method: HTTP method (GET, POST, PUT, DELETE)
         endpoint: API endpoint path (e.g., '/api/notebooks')
         json_data: Optional JSON body for POST/PUT requests
         params: Optional query parameters
-    
+
     Returns:
         Response JSON as dictionary
-    
+
     Raises:
         Exception: If request fails with formatted error message
     """
     base_url = get_base_url()
     url = f"{base_url}{endpoint}"
-    
+
     headers = {"Content-Type": "application/json"}
     auth_token = get_auth_token()
     if auth_token:
         headers["Authorization"] = f"Bearer {auth_token}"
-    
-    async with httpx.AsyncClient(follow_redirects=True, timeout=DEFAULT_TIMEOUT_S) as client:
+
+    async with httpx.AsyncClient(
+        follow_redirects=True, timeout=DEFAULT_TIMEOUT_S
+    ) as client:
         try:
             if method == "GET":
                 r = await client.get(url, headers=headers, params=params)
             elif method == "POST":
-                r = await client.post(url, headers=headers, json=json_data, params=params)
+                r = await client.post(
+                    url, headers=headers, json=json_data, params=params
+                )
             elif method == "PUT":
-                r = await client.put(url, headers=headers, json=json_data, params=params)
+                r = await client.put(
+                    url, headers=headers, json=json_data, params=params
+                )
             elif method == "DELETE":
                 r = await client.delete(url, headers=headers, params=params)
             else:
                 raise ValueError(f"Unsupported HTTP method: {method}")
-            
+
             r.raise_for_status()
-            
+
             # Handle empty responses
             if not r.text:
                 return {"message": "Success"}
-            
+
             try:
                 return r.json()
             except (ValueError, Exception) as json_err:
                 # If response is not valid JSON, return text content
                 log.warning(f"Non-JSON response from {endpoint}: {json_err}")
                 return {"message": "Success", "content": r.text}
-            
+
         except httpx.HTTPError as e:
             error_msg = str(e)
-            if hasattr(e, 'response') and e.response is not None:
+            if hasattr(e, "response") and e.response is not None:
                 try:
                     error_detail = e.response.json()
                     error_msg = error_detail.get("detail", error_msg)
                 except (ValueError, AttributeError):
                     # If error response is not JSON, use text or default message
                     error_msg = e.response.text or error_msg
-            
+
             raise Exception(f"API request failed: {error_msg}")
+
 
 # -----------------------------
 # Notebooks API Tools
 # -----------------------------
+
 
 @mcp.tool()
 async def list_notebooks(
@@ -509,12 +598,12 @@ async def list_notebooks(
     limit: int = 20,
 ) -> dict[str, Any]:
     """Get all notebooks with optional filtering and ordering.
-    
+
     Args:
         archived: Filter by archived status (None = all, True = archived only, False = active only)
         order_by: Order by field and direction (e.g., 'created desc', 'name asc')
         limit: Maximum number of results (1-100)
-    
+
     Returns:
         Dictionary with notebooks list and metadata
     """
@@ -522,26 +611,27 @@ async def list_notebooks(
     params = {"order_by": order_by}
     if archived is not None:
         params["archived"] = archived
-    
+
     notebooks = await make_request("GET", "/api/notebooks", params=params)
-    
+
     # Limit results
     if isinstance(notebooks, list):
         notebooks = notebooks[:limit]
-    
+
     return {
         "request_id": generate_request_id(),
         "count": len(notebooks) if isinstance(notebooks, list) else 0,
         "notebooks": notebooks,
     }
 
+
 @mcp.tool()
 async def get_notebook(notebook_id: str) -> dict[str, Any]:
     """Get a specific notebook by ID.
-    
+
     Args:
         notebook_id: Notebook ID (e.g., 'notebook:abc123')
-    
+
     Returns:
         Notebook details
     """
@@ -551,26 +641,30 @@ async def get_notebook(notebook_id: str) -> dict[str, Any]:
         "notebook": notebook,
     }
 
+
 @mcp.tool()
-async def create_notebook(name: str, description: Optional[str] = None) -> dict[str, Any]:
+async def create_notebook(
+    name: str, description: Optional[str] = None
+) -> dict[str, Any]:
     """Create a new notebook.
-    
+
     Args:
         name: Notebook name
         description: Optional notebook description
-    
+
     Returns:
         Created notebook details
     """
     data = {"name": name}
     if description is not None:
         data["description"] = description
-    
+
     notebook = await make_request("POST", "/api/notebooks", json_data=data)
     return {
         "request_id": generate_request_id(),
         "notebook": notebook,
     }
+
 
 @mcp.tool()
 async def update_notebook(
@@ -580,13 +674,13 @@ async def update_notebook(
     archived: Optional[bool] = None,
 ) -> dict[str, Any]:
     """Update a notebook.
-    
+
     Args:
         notebook_id: Notebook ID
         name: Optional new name
         description: Optional new description
         archived: Optional archived status
-    
+
     Returns:
         Updated notebook details
     """
@@ -597,20 +691,23 @@ async def update_notebook(
         data["description"] = description
     if archived is not None:
         data["archived"] = archived
-    
-    notebook = await make_request("PUT", f"/api/notebooks/{notebook_id}", json_data=data)
+
+    notebook = await make_request(
+        "PUT", f"/api/notebooks/{notebook_id}", json_data=data
+    )
     return {
         "request_id": generate_request_id(),
         "notebook": notebook,
     }
 
+
 @mcp.tool()
 async def delete_notebook(notebook_id: str) -> dict[str, Any]:
     """Delete a notebook.
-    
+
     Args:
         notebook_id: Notebook ID
-    
+
     Returns:
         Success message
     """
@@ -620,9 +717,11 @@ async def delete_notebook(notebook_id: str) -> dict[str, Any]:
         "result": result,
     }
 
+
 # -----------------------------
 # Sources API Tools
 # -----------------------------
+
 
 @mcp.tool()
 async def list_sources(
@@ -631,12 +730,12 @@ async def list_sources(
     offset: int = 0,
 ) -> dict[str, Any]:
     """Get all sources with optional filtering.
-    
+
     Args:
         notebook_id: Optional notebook ID to filter by
         limit: Maximum number of results (1-100)
         offset: Pagination offset
-    
+
     Returns:
         Dictionary with sources list and metadata
     """
@@ -644,7 +743,7 @@ async def list_sources(
     params = {"limit": limit, "offset": offset}
     if notebook_id is not None:
         params["notebook_id"] = notebook_id
-    
+
     sources = await make_request("GET", "/api/sources", params=params)
     return {
         "request_id": generate_request_id(),
@@ -652,13 +751,14 @@ async def list_sources(
         "sources": sources,
     }
 
+
 @mcp.tool()
 async def get_source(source_id: str) -> dict[str, Any]:
     """Get a specific source by ID.
-    
+
     Args:
         source_id: Source ID (e.g., 'source:abc123')
-    
+
     Returns:
         Source details
     """
@@ -667,6 +767,7 @@ async def get_source(source_id: str) -> dict[str, Any]:
         "request_id": generate_request_id(),
         "source": source,
     }
+
 
 @mcp.tool()
 async def create_source(
@@ -677,14 +778,14 @@ async def create_source(
     embed: bool = True,
 ) -> dict[str, Any]:
     """Create a new source (link, upload, or text).
-    
+
     Args:
         notebook_id: Notebook ID to add source to
         type: Source type ('link', 'upload', or 'text')
         url: URL for link type sources
         title: Optional title
         embed: Whether to generate embeddings (default: True)
-    
+
     Returns:
         Created source details
     """
@@ -697,12 +798,13 @@ async def create_source(
         data["url"] = url
     if title is not None:
         data["title"] = title
-    
+
     source = await make_request("POST", "/api/sources", json_data=data)
     return {
         "request_id": generate_request_id(),
         "source": source,
     }
+
 
 @mcp.tool()
 async def update_source(
@@ -711,12 +813,12 @@ async def update_source(
     topics: Optional[list[str]] = None,
 ) -> dict[str, Any]:
     """Update a source.
-    
+
     Args:
         source_id: Source ID
         title: Optional new title
         topics: Optional list of topics
-    
+
     Returns:
         Updated source details
     """
@@ -725,20 +827,21 @@ async def update_source(
         data["title"] = title
     if topics is not None:
         data["topics"] = topics
-    
+
     source = await make_request("PUT", f"/api/sources/{source_id}", json_data=data)
     return {
         "request_id": generate_request_id(),
         "source": source,
     }
 
+
 @mcp.tool()
 async def delete_source(source_id: str) -> dict[str, Any]:
     """Delete a source.
-    
+
     Args:
         source_id: Source ID
-    
+
     Returns:
         Success message
     """
@@ -748,9 +851,11 @@ async def delete_source(source_id: str) -> dict[str, Any]:
         "result": result,
     }
 
+
 # -----------------------------
 # Notes API Tools
 # -----------------------------
+
 
 @mcp.tool()
 async def list_notes(
@@ -759,12 +864,12 @@ async def list_notes(
     offset: int = 0,
 ) -> dict[str, Any]:
     """Get all notes with optional filtering.
-    
+
     Args:
         notebook_id: Optional notebook ID to filter by
         limit: Maximum number of results (1-100)
         offset: Pagination offset
-    
+
     Returns:
         Dictionary with notes list and metadata
     """
@@ -772,7 +877,7 @@ async def list_notes(
     params = {"limit": limit, "offset": offset}
     if notebook_id is not None:
         params["notebook_id"] = notebook_id
-    
+
     notes = await make_request("GET", "/api/notes", params=params)
     return {
         "request_id": generate_request_id(),
@@ -780,13 +885,14 @@ async def list_notes(
         "notes": notes,
     }
 
+
 @mcp.tool()
 async def get_note(note_id: str) -> dict[str, Any]:
     """Get a specific note by ID.
-    
+
     Args:
         note_id: Note ID (e.g., 'note:abc123')
-    
+
     Returns:
         Note details
     """
@@ -796,6 +902,7 @@ async def get_note(note_id: str) -> dict[str, Any]:
         "note": note,
     }
 
+
 @mcp.tool()
 async def create_note(
     notebook_id: str,
@@ -804,13 +911,13 @@ async def create_note(
     topics: Optional[list[str]] = None,
 ) -> dict[str, Any]:
     """Create a new note.
-    
+
     Args:
         notebook_id: Notebook ID to add note to
         title: Note title
         content: Note content
         topics: Optional list of topics
-    
+
     Returns:
         Created note details
     """
@@ -821,12 +928,13 @@ async def create_note(
     }
     if topics is not None:
         data["topics"] = topics
-    
+
     note = await make_request("POST", "/api/notes", json_data=data)
     return {
         "request_id": generate_request_id(),
         "note": note,
     }
+
 
 @mcp.tool()
 async def update_note(
@@ -836,13 +944,13 @@ async def update_note(
     topics: Optional[list[str]] = None,
 ) -> dict[str, Any]:
     """Update a note.
-    
+
     Args:
         note_id: Note ID
         title: Optional new title
         content: Optional new content
         topics: Optional list of topics
-    
+
     Returns:
         Updated note details
     """
@@ -853,20 +961,21 @@ async def update_note(
         data["content"] = content
     if topics is not None:
         data["topics"] = topics
-    
+
     note = await make_request("PUT", f"/api/notes/{note_id}", json_data=data)
     return {
         "request_id": generate_request_id(),
         "note": note,
     }
 
+
 @mcp.tool()
 async def delete_note(note_id: str) -> dict[str, Any]:
     """Delete a note.
-    
+
     Args:
         note_id: Note ID
-    
+
     Returns:
         Success message
     """
@@ -876,9 +985,11 @@ async def delete_note(note_id: str) -> dict[str, Any]:
         "result": result,
     }
 
+
 # -----------------------------
 # Search API Tools
 # -----------------------------
+
 
 @mcp.tool()
 async def search(
@@ -888,13 +999,13 @@ async def search(
     limit: int = 10,
 ) -> dict[str, Any]:
     """Search content using vector or text search.
-    
+
     Args:
         query: Search query
         type: Search type ('vector' or 'text')
         notebook_id: Optional notebook ID to limit search
         limit: Maximum number of results (1-50)
-    
+
     Returns:
         Search results
     """
@@ -906,12 +1017,13 @@ async def search(
     }
     if notebook_id is not None:
         data["notebook_id"] = notebook_id
-    
+
     results = await make_request("POST", "/api/search", json_data=data)
     return {
         "request_id": generate_request_id(),
         "results": results,
     }
+
 
 @mcp.tool()
 async def ask_question(
@@ -922,14 +1034,14 @@ async def ask_question(
     notebook_id: Optional[str] = None,
 ) -> dict[str, Any]:
     """Ask a question about your content with detailed control.
-    
+
     Args:
         question: Question to ask
         strategy_model: Model ID for strategy generation
         answer_model: Model ID for answering
         final_answer_model: Model ID for final answer synthesis
         notebook_id: Optional notebook ID to limit context
-    
+
     Returns:
         Answer with sources and reasoning
     """
@@ -941,12 +1053,13 @@ async def ask_question(
     }
     if notebook_id is not None:
         data["notebook_id"] = notebook_id
-    
+
     result = await make_request("POST", "/api/search/ask", json_data=data)
     return {
         "request_id": generate_request_id(),
         "result": result,
     }
+
 
 @mcp.tool()
 async def ask_simple(
@@ -957,14 +1070,14 @@ async def ask_simple(
     notebook_id: Optional[str] = None,
 ) -> dict[str, Any]:
     """Ask a question about your content with simplified interface.
-    
+
     Args:
         question: Question to ask
         strategy_model: Model ID for strategy generation
         answer_model: Model ID for answering
         final_answer_model: Model ID for final answer synthesis
         notebook_id: Optional notebook ID to limit context
-    
+
     Returns:
         Simple answer
     """
@@ -976,46 +1089,49 @@ async def ask_simple(
     }
     if notebook_id is not None:
         data["notebook_id"] = notebook_id
-    
+
     result = await make_request("POST", "/api/search/ask/simple", json_data=data)
     return {
         "request_id": generate_request_id(),
         "result": result,
     }
 
+
 # -----------------------------
 # Models API Tools
 # -----------------------------
 
+
 @mcp.tool()
 async def list_models(limit: int = 50) -> dict[str, Any]:
     """Get all configured AI models.
-    
+
     Args:
         limit: Maximum number of results (1-100)
-    
+
     Returns:
         Dictionary with models list and metadata
     """
     limit = max(1, min(limit, MAX_LIMIT))
     models = await make_request("GET", "/api/models")
-    
+
     if isinstance(models, list):
         models = models[:limit]
-    
+
     return {
         "request_id": generate_request_id(),
         "count": len(models) if isinstance(models, list) else 0,
         "models": models,
     }
 
+
 @mcp.tool()
 async def get_model(model_id: str) -> dict[str, Any]:
     """Get a specific model by ID.
-    
+
     Args:
         model_id: Model ID (e.g., 'model:abc123')
-    
+
     Returns:
         Model details
     """
@@ -1025,15 +1141,16 @@ async def get_model(model_id: str) -> dict[str, Any]:
         "model": model,
     }
 
+
 @mcp.tool()
 async def create_model(name: str, provider: str, type: str) -> dict[str, Any]:
     """Create a new AI model configuration.
-    
+
     Args:
         name: Model name (e.g., 'gpt-4', 'claude-3-opus')
         provider: Provider name (e.g., 'openai', 'anthropic')
         type: Model type (e.g., 'language', 'embedding')
-    
+
     Returns:
         Created model details
     """
@@ -1042,20 +1159,21 @@ async def create_model(name: str, provider: str, type: str) -> dict[str, Any]:
         "provider": provider,
         "type": type,
     }
-    
+
     model = await make_request("POST", "/api/models", json_data=data)
     return {
         "request_id": generate_request_id(),
         "model": model,
     }
 
+
 @mcp.tool()
 async def delete_model(model_id: str) -> dict[str, Any]:
     """Delete a model configuration.
-    
+
     Args:
         model_id: Model ID
-    
+
     Returns:
         Success message
     """
@@ -1065,10 +1183,11 @@ async def delete_model(model_id: str) -> dict[str, Any]:
         "result": result,
     }
 
+
 @mcp.tool()
 async def get_default_models() -> dict[str, Any]:
     """Get default model configurations.
-    
+
     Returns:
         Default models configuration
     """
@@ -1078,9 +1197,11 @@ async def get_default_models() -> dict[str, Any]:
         "defaults": defaults,
     }
 
+
 # -----------------------------
 # Chat API Tools
 # -----------------------------
+
 
 @mcp.tool()
 async def list_chat_sessions(
@@ -1088,11 +1209,11 @@ async def list_chat_sessions(
     limit: int = 20,
 ) -> dict[str, Any]:
     """Get all chat sessions with optional filtering.
-    
+
     Args:
         notebook_id: Optional notebook ID to filter by
         limit: Maximum number of results (1-100)
-    
+
     Returns:
         Dictionary with sessions list and metadata
     """
@@ -1100,26 +1221,27 @@ async def list_chat_sessions(
     params = {}
     if notebook_id is not None:
         params["notebook_id"] = notebook_id
-    
+
     sessions = await make_request("GET", "/api/chat/sessions", params=params)
-    
+
     if isinstance(sessions, list):
         sessions = sessions[:limit]
-    
+
     return {
         "request_id": generate_request_id(),
         "count": len(sessions) if isinstance(sessions, list) else 0,
         "sessions": sessions,
     }
 
+
 @mcp.tool()
 async def create_chat_session(notebook_id: str, title: str) -> dict[str, Any]:
     """Create a new chat session.
-    
+
     Args:
         notebook_id: Notebook ID for the session
         title: Session title
-    
+
     Returns:
         Created session details
     """
@@ -1127,20 +1249,21 @@ async def create_chat_session(notebook_id: str, title: str) -> dict[str, Any]:
         "notebook_id": notebook_id,
         "title": title,
     }
-    
+
     session = await make_request("POST", "/api/chat/sessions", json_data=data)
     return {
         "request_id": generate_request_id(),
         "session": session,
     }
 
+
 @mcp.tool()
 async def get_chat_session(session_id: str) -> dict[str, Any]:
     """Get a specific chat session by ID.
-    
+
     Args:
         session_id: Session ID (e.g., 'session:abc123')
-    
+
     Returns:
         Session details with message history
     """
@@ -1150,37 +1273,41 @@ async def get_chat_session(session_id: str) -> dict[str, Any]:
         "session": session,
     }
 
+
 @mcp.tool()
 async def update_chat_session(
     session_id: str,
     title: Optional[str] = None,
 ) -> dict[str, Any]:
     """Update a chat session.
-    
+
     Args:
         session_id: Session ID
         title: Optional new title
-    
+
     Returns:
         Updated session details
     """
     data = {}
     if title is not None:
         data["title"] = title
-    
-    session = await make_request("PUT", f"/api/chat/sessions/{session_id}", json_data=data)
+
+    session = await make_request(
+        "PUT", f"/api/chat/sessions/{session_id}", json_data=data
+    )
     return {
         "request_id": generate_request_id(),
         "session": session,
     }
 
+
 @mcp.tool()
 async def delete_chat_session(session_id: str) -> dict[str, Any]:
     """Delete a chat session.
-    
+
     Args:
         session_id: Session ID
-    
+
     Returns:
         Success message
     """
@@ -1190,6 +1317,7 @@ async def delete_chat_session(session_id: str) -> dict[str, Any]:
         "result": result,
     }
 
+
 @mcp.tool()
 async def execute_chat(
     session_id: str,
@@ -1197,12 +1325,12 @@ async def execute_chat(
     context: Optional[dict[str, Any]] = None,
 ) -> dict[str, Any]:
     """Send a message in a chat session.
-    
+
     Args:
         session_id: Session ID
         message: Message to send
         context: Optional context data for the conversation
-    
+
     Returns:
         Chat response with AI message
     """
@@ -1212,12 +1340,13 @@ async def execute_chat(
     }
     if context is not None:
         data["context"] = context
-    
+
     response = await make_request("POST", "/api/chat/execute", json_data=data)
     return {
         "request_id": generate_request_id(),
         "response": response,
     }
+
 
 @mcp.tool()
 async def get_chat_context(
@@ -1225,11 +1354,11 @@ async def get_chat_context(
     context_config: Optional[dict[str, Any]] = None,
 ) -> dict[str, Any]:
     """Build context for a chat conversation.
-    
+
     Args:
         notebook_id: Notebook ID
         context_config: Optional context configuration
-    
+
     Returns:
         Built context data
     """
@@ -1238,21 +1367,23 @@ async def get_chat_context(
     }
     if context_config is not None:
         data["context_config"] = context_config
-    
+
     context = await make_request("POST", "/api/chat/context", json_data=data)
     return {
         "request_id": generate_request_id(),
         "context": context,
     }
 
+
 # -----------------------------
 # Settings API Tools
 # -----------------------------
 
+
 @mcp.tool()
 async def get_settings() -> dict[str, Any]:
     """Get application settings.
-    
+
     Returns:
         Application settings
     """
@@ -1262,13 +1393,14 @@ async def get_settings() -> dict[str, Any]:
         "settings": settings,
     }
 
+
 @mcp.tool()
 async def update_settings(settings: dict[str, Any]) -> dict[str, Any]:
     """Update application settings.
-    
+
     Args:
         settings: Settings dictionary to update
-    
+
     Returns:
         Updated settings
     """
@@ -1278,9 +1410,11 @@ async def update_settings(settings: dict[str, Any]) -> dict[str, Any]:
         "settings": result,
     }
 
+
 # -----------------------------
 # Dual transport entrypoint
 # -----------------------------
+
 
 def main() -> None:
     """Main entry point for the MCP server."""
@@ -1306,6 +1440,7 @@ def main() -> None:
         stateless_http=stateless_http,
         json_response=json_response,
     )
+
 
 if __name__ == "__main__":
     main()

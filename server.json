@@ -10,7 +10,7 @@
   "packages": [
     {
       "registryType": "pypi",
-      "identifier": "open-notebook-mcp",
+      "identifier": "onb-mcp",
       "version": "0.2.0",
       "transport": {
         "type": "stdio"
