@@ -17,23 +17,34 @@
 - **设置 (Settings)**: 获取和更新应用程序设置
 - **渐进式披露 (Progressive Disclosure)**: 使用 `search_capabilities` 进行高效的工具发现
 
-## 安装方法
+## 快速开始 (推荐使用 uvx)
 
-### 使用 uv (推荐)
+本包已发布在 PyPI 上，您不需要手动克隆或安装。您可以使用 **`uvx`**（`uv` 的工具运行器）立即运行该服务器：
 
 ```bash
-# 克隆仓库
-git clone https://github.com/rmc8/onb-mcp.git
-cd onb-mcp
-
-# 同步依赖项
-uv sync
+# 立即运行 MCP 服务器
+uvx onb-mcp
 ```
 
-### 使用 pip
+### 在 Claude Desktop 中使用
 
-```bash
-pip install -e .
+将服务器配置添加到您的 Claude Desktop 配置文件（macOS 为 `~/Library/Application Support/Claude/claude_desktop_config.json`，Windows 为 `%APPDATA%\Claude\claude_desktop_config.json`）：
+
+```json
+{
+  "mcpServers": {
+    "open-notebook": {
+      "command": "uvx",
+      "args": [
+        "onb-mcp"
+      ],
+      "env": {
+        "OPEN_NOTEBOOK_URL": "http://localhost:5055",
+        "OPEN_NOTEBOOK_PASSWORD": "your_password_here"
+      }
+    }
+  }
+}
 ```
 
 ## 配置方法
@@ -42,7 +53,7 @@ pip install -e .
 
 ### 环境变量
 
-创建 `.env` 文件或设置以下环境变量：
+在您的 MCP 客户端配置（如 Claude Desktop 配置）中设置以下环境变量：
 
 ```bash
 # 必须：您的 Open Notebook 实例 URL
@@ -55,30 +66,26 @@ OPEN_NOTEBOOK_PASSWORD=your_password_here
 MCP_TRANSPORT=stdio  # 远程部署时使用 streamable-http
 ```
 
-### 配置示例
+## 从源码安装与开发
 
-使用默认 Open Notebook 设置的本地开发环境：
+如果您需要修改代码或在本地从源码运行：
 
-```bash
-# .env
-OPEN_NOTEBOOK_URL=http://localhost:5055
-```
-
-如果您的 Open Notebook 配置了身份验证：
+### 克隆与同步
 
 ```bash
-# .env
-OPEN_NOTEBOOK_URL=http://localhost:5055
-OPEN_NOTEBOOK_PASSWORD=my_secure_password
+# 克隆仓库
+git clone https://github.com/rmc8/onb-mcp.git
+cd onb-mcp
+
+# 同步依赖项
+uv sync
 ```
 
-## 使用方法
-
-### 运行服务器
+### 运行开发服务器
 
 #### 开发模式 (STDIO)
 
-供 AI 助手本地使用：
+在本地从源码目录启动供 AI 助手使用：
 
 ```bash
 uv run onb-mcp
@@ -90,30 +97,6 @@ uv run onb-mcp
 
 ```bash
 MCP_TRANSPORT=streamable-http HOST=0.0.0.0 PORT=8000 uv run onb-mcp
-```
-
-### 在 Claude Desktop 中使用
-
-将其添加到您的 Claude Desktop 配置文件（例如 `~/Library/Application Support/Claude/claude_desktop_config.json`）：
-
-```json
-{
-  "mcpServers": {
-    "onb-mcp": {
-      "command": "uv",
-      "args": [
-        "run",
-        "--directory",
-        "/absolute/path/to/onb-mcp",
-        "onb-mcp"
-      ],
-      "env": {
-        "OPEN_NOTEBOOK_URL": "http://localhost:5055",
-        "OPEN_NOTEBOOK_PASSWORD": "your_password_if_needed"
-      }
-    }
-  }
-}
 ```
 
 ### 探索可用工具 (渐进式披露)

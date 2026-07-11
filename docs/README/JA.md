@@ -17,23 +17,34 @@
 - **設定 (Settings)**: アプリケーション設定の取得と更新
 - **段階的開示 (Progressive Disclosure)**: `search_capabilities` を用いた効率的なツール探索
 
-## インストール方法
+## クイックスタート (uvx 推奨)
 
-### uv を使用する場合 (推奨)
+本パッケージは PyPI に公開されているため、手動でクローンやインストールを行う必要はありません。**`uvx`**（`uv` のツールランナー）を使用して、すぐに実行できます。
 
 ```bash
-# リポジトリをクローン
-git clone https://github.com/rmc8/onb-mcp.git
-cd onb-mcp
-
-# 依存関係の同期
-uv sync
+# MCPサーバーを即座に実行
+uvx onb-mcp
 ```
 
-### pip を使用する場合
+### Claude Desktop での利用
 
-```bash
-pip install -e .
+Claude Desktop の設定ファイル（macOS の場合は `~/Library/Application Support/Claude/claude_desktop_config.json`、Windows の場合は `%APPDATA%\Claude\claude_desktop_config.json`）に以下を追記します。
+
+```json
+{
+  "mcpServers": {
+    "open-notebook": {
+      "command": "uvx",
+      "args": [
+        "onb-mcp"
+      ],
+      "env": {
+        "OPEN_NOTEBOOK_URL": "http://localhost:5055",
+        "OPEN_NOTEBOOK_PASSWORD": "your_password_here"
+      }
+    }
+  }
+}
 ```
 
 ## 設定方法
@@ -42,7 +53,7 @@ pip install -e .
 
 ### 環境変数
 
-`.env` ファイルを作成するか、以下の環境変数を設定してください。
+MCP クライアント（Claude Desktop など）の設定ファイル内で、以下の環境変数を設定してください。
 
 ```bash
 # 必須: Open Notebook インスタンスのURL
@@ -55,30 +66,26 @@ OPEN_NOTEBOOK_PASSWORD=your_password_here
 MCP_TRANSPORT=stdio  # リモートデプロイの場合は streamable-http
 ```
 
-### 設定例
+## ソースからのインストールと開発方法
 
-デフォルト設定のローカル開発環境の場合:
+コードの変更や、ローカルソースからの実行を行う場合:
 
-```bash
-# .env
-OPEN_NOTEBOOK_URL=http://localhost:5055
-```
-
-認証が有効な Open Notebook の場合:
+### クローンと同期
 
 ```bash
-# .env
-OPEN_NOTEBOOK_URL=http://localhost:5055
-OPEN_NOTEBOOK_PASSWORD=my_secure_password
+# リポジトリをクローン
+git clone https://github.com/rmc8/onb-mcp.git
+cd onb-mcp
+
+# 依存関係の同期
+uv sync
 ```
 
-## 使用方法
-
-### サーバーの起動
+### 開発用サーバーの起動
 
 #### 開発モード (STDIO)
 
-AI アシスタントのローカル利用向け:
+AI アシスタントからソースコードを直接指定してローカルで起動する場合:
 
 ```bash
 uv run onb-mcp
@@ -90,30 +97,6 @@ uv run onb-mcp
 
 ```bash
 MCP_TRANSPORT=streamable-http HOST=0.0.0.0 PORT=8000 uv run onb-mcp
-```
-
-### Claude Desktop での利用
-
-Claude Desktop の設定ファイル (`~/Library/Application Support/Claude/claude_desktop_config.json` 等) に以下を追記します。
-
-```json
-{
-  "mcpServers": {
-    "onb-mcp": {
-      "command": "uv",
-      "args": [
-        "run",
-        "--directory",
-        "/absolute/path/to/onb-mcp",
-        "onb-mcp"
-      ],
-      "env": {
-        "OPEN_NOTEBOOK_URL": "http://localhost:5055",
-        "OPEN_NOTEBOOK_PASSWORD": "your_password_if_needed"
-      }
-    }
-  }
-}
 ```
 
 ### ツール探索 (段階的開示)

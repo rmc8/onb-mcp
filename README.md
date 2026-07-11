@@ -17,23 +17,34 @@ An MCP (Model Context Protocol) server that provides tools to interact with the 
 - **Settings**: Access and update application settings
 - **Progressive Disclosure**: Efficient tool discovery with `search_capabilities`
 
-## Installation
+## Quick Start with uvx (Recommended)
 
-### Using uv (recommended)
+Since this package is published on PyPI, you do not need to clone or install it manually. You can run the server instantly using **`uvx`** (the tool runner for `uv`):
 
 ```bash
-# Clone the repository
-git clone https://github.com/rmc8/onb-mcp.git
-cd onb-mcp
-
-# Install with uv
-uv sync
+# Run the MCP server instantly
+uvx onb-mcp
 ```
 
-### Using pip
+### Using with Claude Desktop
 
-```bash
-pip install -e .
+Add the server to your Claude Desktop configuration (`~/Library/Application Support/Claude/claude_desktop_config.json` on macOS, or `%APPDATA%\Claude\claude_desktop_config.json` on Windows):
+
+```json
+{
+  "mcpServers": {
+    "open-notebook": {
+      "command": "uvx",
+      "args": [
+        "onb-mcp"
+      ],
+      "env": {
+        "OPEN_NOTEBOOK_URL": "http://localhost:5055",
+        "OPEN_NOTEBOOK_PASSWORD": "your_password_here"
+      }
+    }
+  }
+}
 ```
 
 ## Configuration
@@ -42,7 +53,7 @@ The server requires configuration to connect to your Open Notebook instance:
 
 ### Environment Variables
 
-Create a `.env` file or set these environment variables:
+Set these environment variables in your MCP client configuration (e.g. Claude Desktop config):
 
 ```bash
 # Required: URL of your Open Notebook instance
@@ -55,39 +66,29 @@ OPEN_NOTEBOOK_PASSWORD=your_password_here
 MCP_TRANSPORT=stdio  # or streamable-http for remote deployment
 ```
 
-### Example Configuration
+## Development & Installation from Source
 
-For local development with default Open Notebook settings:
+If you want to modify the code or run it locally from source:
 
-```bash
-# .env
-OPEN_NOTEBOOK_URL=http://localhost:5055
-```
-
-If you've configured authentication in Open Notebook:
+### Clone and Sync
 
 ```bash
-# .env
-OPEN_NOTEBOOK_URL=http://localhost:5055
-OPEN_NOTEBOOK_PASSWORD=my_secure_password
+# Clone the repository
+git clone https://github.com/rmc8/onb-mcp.git
+cd onb-mcp
+
+# Install with uv
+uv sync
 ```
 
-## Usage
-
-### Running the Server
+### Running the Dev Server
 
 #### Development Mode (STDIO)
 
-For local use with AI assistants:
+For local use with AI assistants from the source directory:
 
 ```bash
 uv run onb-mcp
-```
-
-Or using the MCP CLI:
-
-```bash
-mcp dev src/onb_mcp/server.py
 ```
 
 #### Production Mode (Streamable HTTP)
@@ -96,30 +97,6 @@ For remote deployment:
 
 ```bash
 MCP_TRANSPORT=streamable-http HOST=0.0.0.0 PORT=8000 uv run onb-mcp
-```
-
-### Using with Claude Desktop
-
-Add to your Claude Desktop configuration (`~/Library/Application Support/Claude/claude_desktop_config.json` on macOS):
-
-```json
-{
-  "mcpServers": {
-    "open-notebook": {
-      "command": "uv",
-      "args": [
-        "run",
-        "--directory",
-        "/path/to/onb-mcp",
-        "onb-mcp"
-      ],
-      "env": {
-        "OPEN_NOTEBOOK_URL": "http://localhost:5055",
-        "OPEN_NOTEBOOK_PASSWORD": "your_password_if_needed"
-      }
-    }
-  }
-}
 ```
 
 ### Discovering Available Tools
