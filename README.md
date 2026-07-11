@@ -247,7 +247,7 @@ history = get_chat_session(session_id=session_id)
 
 ## Available Tools
 
-The server provides 39 tools across multiple categories:
+The server provides 50 tools across multiple categories:
 
 ### Meta Tools
 
@@ -281,6 +281,22 @@ The server provides 39 tools across multiple categories:
 
 - `get_settings`, `update_settings`
 
+### Transformations (3 tools)
+
+- `list_transformations`, `create_transformation`, `apply_transformation`
+
+### Podcasts (3 tools)
+
+- `generate_podcast`, `retry_podcast`, `get_podcast_job_status`
+
+### Credentials (4 tools)
+
+- `list_credentials`, `test_credential`, `discover_models`, `register_models`
+
+### Embedding Rebuild (1 tool)
+
+- `rebuild_embeddings`
+
 ## Architecture
 
 This server follows MCP best practices:
@@ -302,7 +318,7 @@ onb-mcp/
 │   └── onb_mcp/
 │       ├── __init__.py
 │       └── server.py          # Main MCP server implementation
-├── tests/                      # (to be added)
+├── tests/
 ├── pyproject.toml
 ├── README.md
 └── .env.example

@@ -26,6 +26,10 @@ from .tools.search import CAPABILITIES as search_caps
 from .tools.models import CAPABILITIES as models_caps
 from .tools.chat import CAPABILITIES as chat_caps
 from .tools.settings import CAPABILITIES as settings_caps
+from .tools.transformations import CAPABILITIES as transformations_caps
+from .tools.podcasts import CAPABILITIES as podcasts_caps
+from .tools.credentials import CAPABILITIES as credentials_caps
+from .tools.rebuild import CAPABILITIES as rebuild_caps
 
 # Aggregate all capabilities into a single source of truth tuple
 CAPABILITIES: tuple[Capability, ...] = (
@@ -37,4 +41,8 @@ CAPABILITIES: tuple[Capability, ...] = (
     *models_caps,
     *chat_caps,
     *settings_caps,
+    *transformations_caps,
+    *podcasts_caps,
+    *credentials_caps,
+    *rebuild_caps,
 )

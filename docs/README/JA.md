@@ -135,7 +135,7 @@ search_capabilities(query="create_notebook", detail="full", limit=1)
 
 ## 提供ツール一覧
 
-本サーバーは、以下のカテゴリに分かれた合計 39 個のツールを公開しています。詳細は `search_capabilities` ツールで確認できます。
+本サーバーは、以下のカテゴリに分かれた合計 50 個のツールを公開しています。詳細は `search_capabilities` ツールで確認できます。
 
 - **メタツール**: `search_capabilities`
 - **ノートブック (5個)**: `list_notebooks`, `get_notebook`, `create_notebook`, `update_notebook`, `delete_notebook`
@@ -145,6 +145,10 @@ search_capabilities(query="create_notebook", detail="full", limit=1)
 - **モデル (5個)**: `list_models`, `get_model`, `create_model`, `delete_model`, `get_default_models`
 - **チャット (7個)**: `list_chat_sessions`, `create_chat_session`, `get_chat_session`, `update_chat_session`, `delete_chat_session`, `execute_chat`, `get_chat_context`
 - **設定 (2個)**: `get_settings`, `update_settings`
+- **データ変換 (3個)**: `list_transformations`, `create_transformation`, `apply_transformation`
+- **ポッドキャスト (3個)**: `generate_podcast`, `retry_podcast`, `get_podcast_job_status`
+- **認証情報管理 (4個)**: `list_credentials`, `test_credential`, `discover_models`, `register_models`
+- **ベクトル再構築 (1個)**: `rebuild_embeddings`
 
 ## プロジェクト構造
 
@@ -167,7 +171,11 @@ onb-mcp/
 │           ├── search.py
 │           ├── models.py
 │           ├── chat.py
-│           └── settings.py
+│           ├── settings.py
+│           ├── transformations.py
+│           ├── podcasts.py
+│           ├── credentials.py
+│           └── rebuild.py
 ├── tests/                    # pytest 契約テスト
 ├── pyproject.toml
 ├── README.md

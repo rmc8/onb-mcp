@@ -135,7 +135,7 @@ search_capabilities(query="create_notebook", detail="full", limit=1)
 
 ## 可用工具列表
 
-服务器在多个类别中提供了共 39 个工具。详细信息可通过 `search_capabilities` 工具查询：
+服务器在多个类别中提供了共 50 个工具。详细信息可通过 `search_capabilities` 工具查询：
 
 - **元工具**: `search_capabilities`
 - **笔记本 (5个)**: `list_notebooks`, `get_notebook`, `create_notebook`, `update_notebook`, `delete_notebook`
@@ -145,6 +145,10 @@ search_capabilities(query="create_notebook", detail="full", limit=1)
 - **模型 (5个)**: `list_models`, `get_model`, `create_model`, `delete_model`, `get_default_models`
 - **聊天 (7个)**: `list_chat_sessions`, `create_chat_session`, `get_chat_session`, `update_chat_session`, `delete_chat_session`, `execute_chat`, `get_chat_context`
 - **设置 (2个)**: `get_settings`, `update_settings`
+- **数据转换 (3个)**: `list_transformations`, `create_transformation`, `apply_transformation`
+- **播客 (3个)**: `generate_podcast`, `retry_podcast`, `get_podcast_job_status`
+- **凭据管理 (4个)**: `list_credentials`, `test_credential`, `discover_models`, `register_models`
+- **向量重构 (1个)**: `rebuild_embeddings`
 
 ## 项目结构
 
@@ -153,7 +157,7 @@ onb-mcp/
 ├── src/
 │   └── onb_mcp/
 │       ├── __init__.py
-│       ├── config.py         # 常量与配置
+│       ├── config.py         # 配置与常量
 │       ├── mcp_app.py        # FastMCP 实例
 │       ├── client.py         # 共通 API 请求处理
 │       ├── capabilities.py   # 工具元数据收集
@@ -167,7 +171,11 @@ onb-mcp/
 │           ├── search.py
 │           ├── models.py
 │           ├── chat.py
-│           └── settings.py
+│           ├── settings.py
+│           ├── transformations.py
+│           ├── podcasts.py
+│           ├── credentials.py
+│           └── rebuild.py
 ├── tests/                    # pytest 契约测试
 ├── pyproject.toml
 ├── README.md
