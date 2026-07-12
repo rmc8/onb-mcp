@@ -2,7 +2,7 @@
 
 [English] | [日本語](JA.md) | [简体中文](ZH.md)
 
-This document is the official tool reference documenting all 44 tools provided by the `onb-mcp` server, including their parameters, return types, and descriptions.
+This document is the official tool reference documenting all 54 tools provided by the `onb-mcp` server, including their parameters, return types, and descriptions.
 
 ## Meta Tools
 
@@ -94,6 +94,26 @@ This document is the official tool reference documenting all 44 tools provided b
 | `generate_podcast` | Generate a new podcast episode asynchronously from selected sources. | `notebook_id: str`, `episode_name: str`, `episode_profile: str`, `speaker_profile: str`, `content: Optional[str]`, `briefing_suffix: Optional[str]` | `dict[str, Any]` |
 | `retry_podcast` | Retry a failed podcast episode generation job. | `episode_id: str` | `dict[str, Any]` |
 | `get_podcast_job_status` | Get the status of an asynchronous podcast generation job. | `job_id: str` | `dict[str, Any]` |
+
+## Speaker Profiles Management
+
+| Tool Name | Description | Arguments | Return Type |
+| --- | --- | --- | --- |
+| `list_speaker_profiles` | Get all registered speaker profiles. | None | `dict[str, Any]` |
+| `get_speaker_profile` | Get a specific speaker profile by ID. | `profile_id: str` | `dict[str, Any]` |
+| `create_speaker_profile` | Create a new speaker profile. | `name: str`, `description: Optional[str]`, `voice_model: str`, `speakers: list`, `tts_provider: Optional[str]`, `tts_model: Optional[str]` | `dict[str, Any]` |
+| `update_speaker_profile` | Update an existing speaker profile. | `profile_id: str`, `name: Optional[str]`, `description: Optional[str]`, `voice_model: Optional[str]`, `speakers: Optional[list]`, `tts_provider: Optional[str]`, `tts_model: Optional[str]` | `dict[str, Any]` |
+| `delete_speaker_profile` | Delete a specific speaker profile. | `profile_id: str` | `dict[str, Any]` |
+
+## Episode Profiles Management
+
+| Tool Name | Description | Arguments | Return Type |
+| --- | --- | --- | --- |
+| `list_episode_profiles` | Get all registered episode profiles. | None | `dict[str, Any]` |
+| `get_episode_profile` | Get a specific episode profile by ID. | `profile_id: str` | `dict[str, Any]` |
+| `create_episode_profile` | Create a new episode profile. | `name: str`, `description: Optional[str]`, `speaker_config: Optional[str]`, `outline_llm: Optional[str]`, `transcript_llm: Optional[str]`, `language: Optional[str]`, `default_briefing: Optional[str]`, `num_segments: Optional[int]`, `max_tokens: Optional[int]`, `outline_provider: Optional[str]`, `outline_model: Optional[str]`, `transcript_provider: Optional[str]`, `transcript_model: Optional[str]` | `dict[str, Any]` |
+| `update_episode_profile` | Update an existing episode profile. | `profile_id: str`, `name: Optional[str]`, `description: Optional[str]`, `speaker_config: Optional[str]`, `outline_llm: Optional[str]`, `transcript_llm: Optional[str]`, `language: Optional[str]`, `default_briefing: Optional[str]`, `num_segments: Optional[int]`, `max_tokens: Optional[int]`, `outline_provider: Optional[str]`, `outline_model: Optional[str]`, `transcript_provider: Optional[str]`, `transcript_model: Optional[str]` | `dict[str, Any]` |
+| `delete_episode_profile` | Delete a specific episode profile. | `profile_id: str` | `dict[str, Any]` |
 
 ## Credential Providers Management
 

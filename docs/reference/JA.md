@@ -2,7 +2,7 @@
 
 [日本語] | [English](EN.md) | [简体中文](ZH.md)
 
-本ドキュメントは、`onb-mcp` サーバーが提供するすべてのツール（全44種）の引数、戻り値の型、および説明をまとめた公式リファレンスです。
+本ドキュメントは、`onb-mcp` サーバーが提供するすべてのツール（全54種）の引数、戻り値の型、および説明をまとめた公式リファレンスです。
 
 ## メタツール
 
@@ -94,6 +94,26 @@
 | `generate_podcast` | 選択されたソース群から、対談音声（ポッドキャスト）の生成ジョブを非同期で開始します。 | `notebook_id: str`, `episode_name: str`, `episode_profile: str`, `speaker_profile: str`, `content: Optional[str]`, `briefing_suffix: Optional[str]` | `dict[str, Any]` |
 | `retry_podcast` | 失敗したポッドキャスト生成ジョブを再試行します。 | `episode_id: str` | `dict[str, Any]` |
 | `get_podcast_job_status` | 非同期で進行しているポッドキャスト生成ジョブの進捗とステータスを取得します。 | `job_id: str` | `dict[str, Any]` |
+
+## スピーカプロファイル管理
+
+| ツール名 | 説明 | 引数 | 戻り値 |
+| --- | --- | --- | --- |
+| `list_speaker_profiles` | 登録されているすべてのスピーカプロファイルを取得します。 | なし | `dict[str, Any]` |
+| `get_speaker_profile` | 指定されたIDのスピーカプロファイルを取得します。 | `profile_id: str` | `dict[str, Any]` |
+| `create_speaker_profile` | 新しいスピーカプロファイルを作成します。 | `name: str`, `description: Optional[str]`, `voice_model: str`, `speakers: list`, `tts_provider: Optional[str]`, `tts_model: Optional[str]` | `dict[str, Any]` |
+| `update_speaker_profile` | 既存のスピーカプロファイルを更新します。 | `profile_id: str`, `name: Optional[str]`, `description: Optional[str]`, `voice_model: Optional[str]`, `speakers: Optional[list]`, `tts_provider: Optional[str]`, `tts_model: Optional[str]` | `dict[str, Any]` |
+| `delete_speaker_profile` | 指定されたIDのスピーカプロファイルを削除します。 | `profile_id: str` | `dict[str, Any]` |
+
+## エピソードプロファイル管理
+
+| ツール名 | 説明 | 引数 | 戻り値 |
+| --- | --- | --- | --- |
+| `list_episode_profiles` | 登録されているすべてのエピソードプロファイルを取得します。 | なし | `dict[str, Any]` |
+| `get_episode_profile` | 指定されたIDのエピソードプロファイルを取得します。 | `profile_id: str` | `dict[str, Any]` |
+| `create_episode_profile` | 新しいエピソードプロファイルを作成します。 | `name: str`, `description: Optional[str]`, `speaker_config: Optional[str]`, `outline_llm: Optional[str]`, `transcript_llm: Optional[str]`, `language: Optional[str]`, `default_briefing: Optional[str]`, `num_segments: Optional[int]`, `max_tokens: Optional[int]`, `outline_provider: Optional[str]`, `outline_model: Optional[str]`, `transcript_provider: Optional[str]`, `transcript_model: Optional[str]` | `dict[str, Any]` |
+| `update_episode_profile` | 既存のエピソードプロファイルを更新します。 | `profile_id: str`, `name: Optional[str]`, `description: Optional[str]`, `speaker_config: Optional[str]`, `outline_llm: Optional[str]`, `transcript_llm: Optional[str]`, `language: Optional[str]`, `default_briefing: Optional[str]`, `num_segments: Optional[int]`, `max_tokens: Optional[int]`, `outline_provider: Optional[str]`, `outline_model: Optional[str]`, `transcript_provider: Optional[str]`, `transcript_model: Optional[str]` | `dict[str, Any]` |
+| `delete_episode_profile` | 指定されたIDのエピソードプロファイルを削除します。 | `profile_id: str` | `dict[str, Any]` |
 
 ## プロバイダー認証情報管理
 
