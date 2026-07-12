@@ -2,7 +2,7 @@
 
 [简体中文] | [English](EN.md) | [日本語](JA.md)
 
-本文档是 `onb-mcp` 服务器提供的全部 44 个工具的官方参考手册，包含参数、返回值类型及功能说明。
+本文档是 `onb-mcp` 服务器提供的全部 54 个工具的官方参考手册，包含参数、返回值类型及功能说明。
 
 ## 元工具
 
@@ -94,6 +94,26 @@
 | `generate_podcast` | 从选定内容源异步生成播客对话音频任务。 | `notebook_id: str`, `episode_name: str`, `episode_profile: str`, `speaker_profile: str`, `content: Optional[str]`, `briefing_suffix: Optional[str]` | `dict[str, Any]` |
 | `retry_podcast` | 重新尝试失败的播客生成任务。 | `episode_id: str` | `dict[str, Any]` |
 | `get_podcast_job_status` | 获取异步播客生成任务的进度与状态。 | `job_id: str` | `dict[str, Any]` |
+
+## 声音人设管理 (Speaker Profiles)
+
+| 工具名称 | 说明 | 参数 | 返回值 |
+| --- | --- | --- | --- |
+| `list_speaker_profiles` | 获取所有已注册的声音人设配置。 | 无 | `dict[str, Any]` |
+| `get_speaker_profile` | 通过 ID 获取特定的声音人设。 | `profile_id: str` | `dict[str, Any]` |
+| `create_speaker_profile` | 创建新的声音人设。 | `name: str`, `description: Optional[str]`, `voice_model: str`, `speakers: list`, `tts_provider: Optional[str]`, `tts_model: Optional[str]` | `dict[str, Any]` |
+| `update_speaker_profile` | 更新现有的声音人设。 | `profile_id: str`, `name: Optional[str]`, `description: Optional[str]`, `voice_model: Optional[str]`, `speakers: Optional[list]`, `tts_provider: Optional[str]`, `tts_model: Optional[str]` | `dict[str, Any]` |
+| `delete_speaker_profile` | 删除特定的声音人设。 | `profile_id: str` | `dict[str, Any]` |
+
+## 单期节目格式管理 (Episode Profiles)
+
+| 工具名称 | 说明 | 参数 | 返回值 |
+| --- | --- | --- | --- |
+| `list_episode_profiles` | 获取所有已注册的单期节目格式配置。 | 无 | `dict[str, Any]` |
+| `get_episode_profile` | 通过 ID 获取特定的单期节目格式配置。 | `profile_id: str` | `dict[str, Any]` |
+| `create_episode_profile` | 创建新的单期节目格式配置。 | `name: str`, `description: Optional[str]`, `speaker_config: Optional[str]`, `outline_llm: Optional[str]`, `transcript_llm: Optional[str]`, `language: Optional[str]`, `default_briefing: Optional[str]`, `num_segments: Optional[int]`, `max_tokens: Optional[int]`, `outline_provider: Optional[str]`, `outline_model: Optional[str]`, `transcript_provider: Optional[str]`, `transcript_model: Optional[str]` | `dict[str, Any]` |
+| `update_episode_profile` | 更新现有的单期节目格式配置。 | `profile_id: str`, `name: Optional[str]`, `description: Optional[str]`, `speaker_config: Optional[str]`, `outline_llm: Optional[str]`, `transcript_llm: Optional[str]`, `language: Optional[str]`, `default_briefing: Optional[str]`, `num_segments: Optional[int]`, `max_tokens: Optional[int]`, `outline_provider: Optional[str]`, `outline_model: Optional[str]`, `transcript_provider: Optional[str]`, `transcript_model: Optional[str]` | `dict[str, Any]` |
+| `delete_episode_profile` | 删除特定的单期节目格式配置。 | `profile_id: str` | `dict[str, Any]` |
 
 ## 凭据管理
 

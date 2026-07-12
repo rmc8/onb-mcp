@@ -6,12 +6,12 @@
     "url": "https://github.com/rmc8/onb-mcp",
     "source": "github"
   },
-  "version": "0.2.0",
+  "version": "0.4.1",
   "packages": [
     {
       "registryType": "pypi",
       "identifier": "onb-mcp",
-      "version": "0.2.0",
+      "version": "0.4.1",
       "transport": {
         "type": "stdio"
       },

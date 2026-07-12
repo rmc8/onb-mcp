@@ -224,7 +224,7 @@ history = get_chat_session(session_id=session_id)
 
 ## Available Tools
 
-The server provides 50 tools across multiple categories:
+The server provides 60 tools across multiple categories:
 
 ### Meta Tools
 
@@ -262,9 +262,11 @@ The server provides 50 tools across multiple categories:
 
 - `list_transformations`, `create_transformation`, `apply_transformation`
 
-### Podcasts (3 tools)
+### Podcasts (13 tools)
 
 - `generate_podcast`, `retry_podcast`, `get_podcast_job_status`
+- **Speaker Profiles**: `list_speaker_profiles`, `get_speaker_profile`, `create_speaker_profile`, `update_speaker_profile`, `delete_speaker_profile`
+- **Episode Profiles**: `list_episode_profiles`, `get_episode_profile`, `create_episode_profile`, `update_episode_profile`, `delete_episode_profile`
 
 ### Credentials (4 tools)
 
