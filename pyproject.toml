@@ -1,6 +1,6 @@
 [project]
 name = "onb-mcp"
-version = "0.4.6"
+version = "0.4.7"
 description = "MCP server that wraps the Open Notebook API"
 authors = [
     { name = "rmc8" }
