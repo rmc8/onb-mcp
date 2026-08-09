@@ -1,6 +1,6 @@
 [project]
 name = "onb-mcp"
-version = "0.4.2"
+version = "0.4.3"
 description = "MCP server that wraps the Open Notebook API"
 authors = [
     { name = "rmc8" }
@@ -9,7 +9,7 @@ readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
     "httpx>=0.28.1",
-    "mcp>=1.3.0",
+    "mcp[cli]>=1.3.0",
 ]
 
 [project.urls]
