@@ -2,6 +2,8 @@ name: Publish to MCP Registry
 
 on:
   push:
+    branches:
+      - main
     tags: ["v*"] # Triggers on version tags like v1.0.0
   workflow_dispatch: # Allows manual triggering from GitHub UI
 
@@ -41,7 +43,7 @@ jobs:
       - name: Publish package to PyPI
         run: uv publish
         env:
-          UV_PUBLISH_TOKEN: ${{ secrets.PYPI_TOKEN }}
+          UV_PUBLISH_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
 
       ### Publish MCP server:
 
